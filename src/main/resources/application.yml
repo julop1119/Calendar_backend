@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: calendar-backend
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://cmled.synology.me:8004/calendar_db}
+    username: ${DB_USERNAME:kcc_admin}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-seconds: ${JWT_EXPIRATION_SECONDS:86400}
+    issuer: calendar-backend
+  frontend:
+    redirect-uri: ${FRONTEND_REDIRECT_URI:http://localhost:3000/oauth/callback}
+
+google:
+  places:
+    api-key: ${GOOGLE_PLACES_API_KEY:}
+    base-url: https://places.googleapis.com
+    language-code: ko
+    max-result-count: 5
+
+# 일정 자연어 파싱은 Gemini만 사용한다. 키는 환경 변수로 넣는다.
+calendar:
+  ai:
+    zone: Asia/Seoul
+    gemini:
+      api-key: ${GEMINI_API_KEY:}
+      model: ${GEMINI_MODEL:gemini-3.5-flash-lite}
+      base-url: https://generativelanguage.googleapis.com
