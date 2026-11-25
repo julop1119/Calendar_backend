@@ -3,8 +3,8 @@ spring:
     name: calendar-backend
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://cmled.synology.me:8004/calendar_db}
-    username: ${DB_USERNAME:kcc_admin}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
   jpa:
