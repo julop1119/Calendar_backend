@@ -47,7 +47,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         ensureDefaultCalendar(user);
 
         String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail(), user.getName());
-        String redirectUrl = UriComponentsBuilder.fromUriString(frontendProperties.getRedirectUri())
+
+        Object platform = request.getSession().getAttribute(PlatformAwareAuthorizationRequestResolver.SESSION_ATTRIBUTE);
+        String baseRedirectUri = "android".equals(platform) || "ios".equals(platform)
+                ? frontendProperties.getMobileRedirectUri()
+                : frontendProperties.getRedirectUri();
+
+        String redirectUrl = UriComponentsBuilder.fromUriString(baseRedirectUri)
                 .queryParam("token", token)
                 .build()
                 .toUriString();

@@ -35,6 +35,7 @@ app:
     issuer: calendar-backend
   frontend:
     redirect-uri: ${FRONTEND_REDIRECT_URI:http://localhost:3000/oauth/callback}
+    mobile-redirect-uri: ${MOBILE_OAUTH_REDIRECT_URI:com.example.calendar.app://oauth/callback}
 
 google:
   places:

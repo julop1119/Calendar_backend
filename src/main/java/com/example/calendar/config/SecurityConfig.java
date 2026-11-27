@@ -2,6 +2,7 @@ package com.example.calendar.config;
 
 import com.example.calendar.security.JwtAuthenticationFilter;
 import com.example.calendar.security.OAuth2LoginSuccessHandler;
+import com.example.calendar.security.PlatformAwareAuthorizationRequestResolver;
 import com.example.calendar.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ public class SecurityConfig {
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final FrontendProperties frontendProperties;
+    private final PlatformAwareAuthorizationRequestResolver platformAwareAuthorizationRequestResolver;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,6 +42,9 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
+                .authorizationEndpoint(endpoint -> endpoint
+                    .authorizationRequestResolver(platformAwareAuthorizationRequestResolver)
+                )
                 .userInfoEndpoint(userInfo -> userInfo
                     .oidcUserService(customOAuth2UserService)
                 )
